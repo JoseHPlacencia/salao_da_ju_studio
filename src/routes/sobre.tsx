@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/sobre")({
   head: () => ({
     meta: [
-      { title: "O Studio | Studio Aura" },
-      { name: "description", content: "Conheça a história, os valores e a equipe do Studio Aura, salão de beleza acolhedor em Vitória." },
-      { property: "og:title", content: "O Studio | Studio Aura" },
+      { title: "O Studio | Da Ju Hair" },
+      { name: "description", content: "Conheça a história, os valores e a equipe do Da Ju Hair, salão de beleza acolhedor em Vitória." },
+      { property: "og:title", content: "O Studio | Da Ju Hair" },
       { property: "og:description", content: "Nossa história, nossos valores e as profissionais que cuidam de você." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.interior },
@@ -39,7 +39,7 @@ function AboutPage() {
         title="Studio"
         description="Um lugar para ser você. Beleza e bem-estar caminhando juntos — sem pressa, sem padrões, com muito afeto."
         image={images.interior}
-        imageAlt="Interior acolhedor do Studio Aura"
+        imageAlt="Interior acolhedor do Da Ju Hair"
       />
 
       <Sheet tone="light">

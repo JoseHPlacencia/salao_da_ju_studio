@@ -11,7 +11,7 @@ import { isHeroLogoDocked, onHeroLogoDocked } from "@/lib/logo-handoff";
 export function TopBar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
-  // No início, o logo pequeno só aparece quando o "Aura" gigante da capa termina de encolher.
+  // No início, o logo pequeno só aparece quando o nome gigante da capa termina de encolher.
   const [docked, setDocked] = useState(false);
 
   useEffect(() => {
@@ -24,14 +24,14 @@ export function TopBar() {
       <div className="container-aura flex items-start justify-between pt-4 md:pt-6">
         <Link
           to="/"
-          aria-label="Studio Aura, início"
+          aria-label="Da Ju Hair, início"
           data-aura-logo
           className={cn(
             "pointer-events-auto font-display text-[1.75rem] leading-[0.78] font-medium tracking-[-0.075em] md:text-[2.25rem]",
             isHome && !docked && "pointer-events-none opacity-0",
           )}
         >
-          Aura
+          Da Ju Hair
         </Link>
         <div className="pointer-events-auto flex items-center gap-1.5">
           <a href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer" className="hidden transition-opacity hover:opacity-60 sm:block">

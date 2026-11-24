@@ -9,7 +9,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Studio Aura — design system (Kiln-inspired)
+ * Da Ju Hair — design system (Kiln-inspired)
  * Swiss/editorial: pure white, near-black ink, light grey panels and one loud coral signature.
  * Type: Instrument Sans (display + text, tight tracking) and IBM Plex Mono for tags/labels.
  */
@@ -156,6 +156,15 @@
   font-size: clamp(6rem, 31vw, 34rem);
   line-height: 0.78;
   letter-spacing: -0.075em;
+}
+/* Nome "Da Ju Hair": mais longo que o antigo logo, então a fonte é menor para caber na largura. */
+@utility wordmark-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(3.4rem, 21vw, 30rem);
+  line-height: 0.78;
+  letter-spacing: -0.075em;
+  white-space: nowrap;
 }
 @utility display-xl {
   font-family: var(--font-display);
@@ -304,8 +313,8 @@
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
 }
 .split-word > span {
   display: inline-block;
