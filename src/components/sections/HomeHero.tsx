@@ -119,9 +119,11 @@ export function HomeHero() {
           <div className="flex flex-wrap items-start justify-between gap-3 animate-[page-in_0.9s_var(--ease-out-expo)_1.7s_both] lg:items-end">
             {/*<p className="max-w-[16rem] text-sm">Salão de beleza · cabelo, unhas, maquiagem e tratamentos em {site.address.city}.</p>*/}
             <div className="flex gap-1">
+              {/*
               <Tag>Beleza</Tag>
               <Tag>Bem-estar</Tag>
               <Tag shape="pill">desde 2014</Tag>
+              */}
             </div>
           </div>
         </div>
