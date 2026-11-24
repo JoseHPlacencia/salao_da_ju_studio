@@ -1,9 +1,12 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Clock, Instagram, Mail, MapPin, MessageCircle } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { FaqList } from "@/components/sections/FaqList";
 import { Reveal } from "@/components/motion/Reveal";
+import { Sheet } from "@/components/aura/Sheet";
+import { Tag } from "@/components/aura/Tag";
+import { SectionLabel } from "@/components/aura/SectionLabel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +33,8 @@ export const Route = createFileRoute("/contato")({
   component: ContactPage,
 });
 
-const fieldClass = "h-12 rounded-none border-0 border-b bg-transparent px-0 shadow-none focus-visible:border-accent focus-visible:ring-0";
+const fieldClass =
+  "h-12 rounded-none border-0 border-b border-foreground bg-transparent px-0 text-lg shadow-none focus-visible:border-accent focus-visible:ring-0";
 
 function ContactPage() {
   const [service, setService] = useState("");
@@ -53,27 +57,22 @@ function ContactPage() {
     <>
       <PageHero
         eyebrow="Contato"
-        title="Vamos marcar"
-        italic="seu momento?"
-        description="Preencha o formulário e sua mensagem chega pronta no nosso WhatsApp. Se preferir, fale direto com a equipe."
+        tags={["Agendamento", "WhatsApp"]}
+        title="Contato"
+        description="Vamos marcar seu momento? Preencha o formulário e sua mensagem chega pronta no nosso WhatsApp."
         image={images.salonChairs}
         imageAlt="Cadeiras do salão Studio Aura"
       />
 
-      <section className="container-aura grid gap-14 pb-20 md:grid-cols-12 md:pb-28">
-        <Reveal className="md:col-span-7">
-          <form onSubmit={onSubmit} className="rounded-[2rem] border bg-card p-8 shadow-soft md:p-12">
-            <p className="eyebrow text-accent">Pedido de agendamento</p>
-            <h2 className="display-md mt-3">
-              Conte para a gente <em className="text-accent">o que deseja.</em>
-            </h2>
-            <div className="mt-10 grid gap-8 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="eyebrow text-muted-foreground">Seu nome</Label>
+      <Sheet tone="light">
+        <div className="container-aura grid gap-14 pt-8 pb-20 md:grid-cols-12 md:pb-28">
+          <Reveal className="md:col-span-7">
+            <SectionLabel className="pb-4">Pedido de agendamento</SectionLabel>
+            <form onSubmit={onSubmit} className="grid gap-8 md:grid-cols-2">
+              <Field label="Seu nome" htmlFor="name">
                 <Input id="name" name="name" required maxLength={80} placeholder="Como podemos te chamar?" className={fieldClass} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="service" className="eyebrow text-muted-foreground">Serviço</Label>
+              </Field>
+              <Field label="Serviço" htmlFor="service">
                 <Select value={service} onValueChange={setService}>
                   <SelectTrigger id="service" className={fieldClass}>
                     <SelectValue placeholder="Escolha um serviço" />
@@ -90,87 +89,104 @@ function ContactPage() {
                     <SelectItem value="Ainda não sei">Ainda não sei</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="day" className="eyebrow text-muted-foreground">Melhor dia e horário</Label>
+              </Field>
+              <Field label="Melhor dia e horário" htmlFor="day" wide>
                 <Input id="day" name="day" maxLength={80} placeholder="Ex.: sábado de manhã" className={fieldClass} />
+              </Field>
+              <Field label="Observações" htmlFor="message" wide>
+                <Textarea
+                  id="message"
+                  name="message"
+                  maxLength={500}
+                  rows={3}
+                  placeholder="Referências, dúvidas, alergias..."
+                  className="min-h-24 resize-none rounded-none border-0 border-b border-foreground bg-transparent px-0 text-lg shadow-none focus-visible:border-accent focus-visible:ring-0"
+                />
+              </Field>
+              <div className="md:col-span-2">
+                <Button type="submit" variant="solid" size="xl">
+                  Enviar pelo WhatsApp <ArrowUpRight />
+                </Button>
               </div>
-              <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="message" className="eyebrow text-muted-foreground">Observações</Label>
-                <Textarea id="message" name="message" maxLength={500} rows={3} placeholder="Referências, dúvidas, alergias..." className="min-h-24 resize-none rounded-none border-0 border-b bg-transparent px-0 shadow-none focus-visible:border-accent focus-visible:ring-0" />
-              </div>
-            </div>
-            <Button type="submit" variant="ink" size="xl" className="mt-10 w-full md:w-auto">
-              Enviar pelo WhatsApp <ArrowUpRight />
-            </Button>
-          </form>
+            </form>
+          </Reveal>
+
+          <div className="md:col-span-4 md:col-start-9">
+            <SectionLabel className="pb-4">Informações</SectionLabel>
+            <dl className="border-t border-foreground">
+              <InfoRow label="Endereço" delay={0}>
+                {site.address.street}
+                <br />
+                {site.address.district} · {site.address.city}
+              </InfoRow>
+              <InfoRow label="Horários" delay={100}>
+                <ul className="space-y-1">
+                  {site.hours.map((h) => (
+                    <li key={h.days} className="flex justify-between gap-4">
+                      <span>{h.days}</span>
+                      <span className="mono">{h.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </InfoRow>
+              <InfoRow label="Canais" delay={200}>
+                <div className="flex flex-wrap gap-1">
+                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                    <Tag shape="pill">whatsapp</Tag>
+                  </a>
+                  <a href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                    <Tag>@{site.instagram}</Tag>
+                  </a>
+                  <a href={`mailto:${site.email}`} className="hover:text-accent">
+                    <Tag shape="pill">{site.email}</Tag>
+                  </a>
+                </div>
+              </InfoRow>
+            </dl>
+          </div>
+        </div>
+      </Sheet>
+
+      <Sheet tone="muted">
+        <div className="container-aura pt-8 pb-6">
+          <SectionLabel action={<Tag shape="pill">{site.address.city}</Tag>}>Como chegar</SectionLabel>
+        </div>
+        <Reveal variant="clip">
+          <div className="aspect-[4/3] md:aspect-[21/8]">
+            <iframe
+              title="Mapa com a localização do Studio Aura"
+              src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+              className="h-full w-full grayscale"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </Reveal>
+      </Sheet>
 
-        <div className="space-y-6 md:col-span-5">
-          <Reveal delay={100}>
-            <InfoCard icon={<MapPin className="size-5" />} title="Endereço">
-              {site.address.street}
-              <br />
-              {site.address.district} · {site.address.city}
-            </InfoCard>
-          </Reveal>
-          <Reveal delay={200}>
-            <InfoCard icon={<Clock className="size-5" />} title="Horários">
-              <ul className="space-y-1">
-                {site.hours.map((h) => (
-                  <li key={h.days} className="flex justify-between gap-4">
-                    <span>{h.days}</span>
-                    <span className="text-foreground">{h.time}</span>
-                  </li>
-                ))}
-              </ul>
-            </InfoCard>
-          </Reveal>
-          <Reveal delay={300}>
-            <InfoCard icon={<MessageCircle className="size-5" />} title="Fale com a gente">
-              <div className="flex flex-col gap-2">
-                <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex w-fit items-center gap-2">
-                  <MessageCircle className="size-4" /> WhatsApp
-                </a>
-                <a href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex w-fit items-center gap-2">
-                  <Instagram className="size-4" /> @{site.instagram}
-                </a>
-                <a href={`mailto:${site.email}`} className="link-underline inline-flex w-fit items-center gap-2">
-                  <Mail className="size-4" /> {site.email}
-                </a>
-              </div>
-            </InfoCard>
-          </Reveal>
-        </div>
-      </section>
-
-      <Reveal variant="clip" className="container-aura">
-        <div className="aspect-[16/9] overflow-hidden rounded-[2rem] border md:aspect-[21/8]">
-          <iframe
-            title="Mapa com a localização do Studio Aura"
-            src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
-            className="h-full w-full grayscale-[60%] sepia-[20%]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </Reveal>
-
-      <FaqList />
+      <Sheet tone="light">
+        <FaqList />
+      </Sheet>
     </>
   );
 }
 
-function InfoCard({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
+function Field({ label, htmlFor, wide, children }: { label: string; htmlFor: string; wide?: boolean; children: ReactNode }) {
   return (
-    <div className="group rounded-2xl border bg-card p-7 transition-all duration-700 hover:-translate-y-1 hover:shadow-soft">
-      <div className="flex items-center gap-3">
-        <span className="grid size-11 place-items-center rounded-full bg-secondary text-accent transition-colors duration-500 group-hover:bg-accent group-hover:text-accent-foreground">
-          {icon}
-        </span>
-        <h3 className="text-2xl">{title}</h3>
-      </div>
-      <div className="mt-5 text-sm text-muted-foreground">{children}</div>
+    <div className={wide ? "space-y-1 md:col-span-2" : "space-y-1"}>
+      <Label htmlFor={htmlFor} className="mono text-muted-foreground">
+        {label}
+      </Label>
+      {children}
     </div>
+  );
+}
+
+function InfoRow({ label, delay, children }: { label: string; delay: number; children: ReactNode }) {
+  return (
+    <Reveal delay={delay} className="grid grid-cols-[6rem_1fr] gap-4 border-b border-foreground/15 py-5 text-sm">
+      <dt className="mono text-muted-foreground">{label}</dt>
+      <dd>{children}</dd>
+    </Reveal>
   );
 }

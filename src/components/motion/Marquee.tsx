@@ -10,8 +10,8 @@ export function Marquee({ items, reverse = false, className }: { items: string[]
           <div key={copy} className="flex shrink-0 items-center">
             {row.map((item, i) => (
               <span key={`${copy}-${i}`} className="flex items-center">
-                <span className="px-6 font-display text-3xl italic md:px-10 md:text-5xl">{item}</span>
-                <span className="text-accent text-2xl md:text-3xl">✳</span>
+                <span className="px-5 text-4xl tracking-[-0.05em] md:px-8 md:text-7xl">{item}</span>
+                <span className="mono rounded-full border border-current px-2 py-0.5">✳</span>
               </span>
             ))}
           </div>

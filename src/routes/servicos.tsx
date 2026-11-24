@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { BookingCTA } from "@/components/sections/BookingCTA";
 import { Reveal } from "@/components/motion/Reveal";
-import { Parallax } from "@/components/motion/Parallax";
 import { Button } from "@/components/ui/button";
+import { Sheet } from "@/components/aura/Sheet";
+import { Tag } from "@/components/aura/Tag";
 import { serviceCategories } from "@/data/services";
 import { images } from "@/data/images";
 import { whatsappUrl } from "@/lib/whatsapp";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/servicos")({
   head: () => ({
@@ -27,120 +27,106 @@ export const Route = createFileRoute("/servicos")({
 });
 
 function ServicesPage() {
+  const total = serviceCategories.reduce((n, c) => n + c.items.length, 0);
   return (
     <>
       <PageHero
         eyebrow="Serviços"
-        title="Cuidado de"
-        italic="ponta a ponta."
-        description="Do corte ao ritual de autocuidado, cada serviço é personalizado para valorizar quem você é. Valores e disponibilidade direto com a equipe."
+        tags={[`${total} serviços`, "4 áreas"]}
+        title="Serviços"
+        description="Cuidado de ponta a ponta. Do corte ao ritual de autocuidado, cada serviço é personalizado para valorizar quem você é."
         image={images.haircut}
         imageAlt="Bancadas e cadeiras do salão"
       />
 
-      <nav className="sticky top-16 z-30 border-y bg-background/90 backdrop-blur-md" aria-label="Categorias de serviço">
-        <div className="container-aura flex gap-2 overflow-x-auto py-3">
-          {serviceCategories.map((c) => (
-            <a
-              key={c.id}
-              href={`#${c.id}`}
-              className="eyebrow shrink-0 rounded-full border px-5 py-2.5 transition-all duration-500 hover:border-accent hover:bg-accent hover:text-accent-foreground"
-            >
-              {c.number} {c.title}
-            </a>
-          ))}
-        </div>
-      </nav>
+      <Sheet tone="light">
+        <nav className="sticky top-0 z-20 rounded-t-[1.25rem] border-b border-foreground bg-background/95 backdrop-blur" aria-label="Categorias de serviço">
+          <div className="container-aura scrollbar-none flex gap-1 overflow-x-auto pt-16 pb-3 md:pt-20">
+            {serviceCategories.map((c) => (
+              <a key={c.id} href={`#${c.id}`} className="transition-colors hover:text-accent">
+                <Tag shape="pill" className="h-7 px-3">
+                  {c.number} {c.title}
+                </Tag>
+              </a>
+            ))}
+          </div>
+        </nav>
 
-      {serviceCategories.map((c, ci) => (
-        <section key={c.id} id={c.id} className={cn("scroll-mt-36 py-20 md:py-28", ci % 2 === 1 && "bg-paper")}>
-          <div className="container-aura grid gap-12 md:grid-cols-12">
-            <div className={cn("md:col-span-5", ci % 2 === 1 && "md:order-2 md:col-start-8")}>
-              <div className="md:sticky md:top-40">
-                <Reveal variant="clip">
-                  <div className="aspect-[4/5] overflow-hidden rounded-2xl">
-                    <Parallax speed={0.06}>
-                      <img src={c.image} alt={c.headline} className="h-full w-full object-cover" loading="lazy" />
-                    </Parallax>
-                  </div>
-                </Reveal>
+        {serviceCategories.map((c) => (
+          <section key={c.id} id={c.id} className="container-aura scroll-mt-32 border-b border-foreground/15 py-16 md:py-20">
+            <div className="grid gap-8 md:grid-cols-12">
+              <div className="md:col-span-4">
+                <div className="md:sticky md:top-32">
+                  <Reveal variant="fade" className="flex gap-1">
+                    <Tag>{c.number}</Tag>
+                    <Tag shape="pill">{c.title}</Tag>
+                    <Tag shape="circle">{c.items.length}</Tag>
+                  </Reveal>
+                  <Reveal delay={100}>
+                    <h2 className="display-lg mt-6">{c.headline}</h2>
+                    <p className="mt-4 max-w-sm text-muted-foreground">{c.summary}</p>
+                  </Reveal>
+                  <Reveal variant="clip" delay={200} className="mt-8">
+                    <div className="zoom-media aspect-[4/3] overflow-hidden bg-muted">
+                      <img src={c.image} alt={c.headline} loading="lazy" className="h-full w-full object-cover" />
+                    </div>
+                  </Reveal>
+                </div>
               </div>
-            </div>
-            <div className={cn("md:col-span-6", ci % 2 === 1 ? "md:order-1 md:col-start-1" : "md:col-start-7")}>
-              <Reveal variant="fade">
-                <p className="eyebrow text-accent">
-                  {c.number} / {c.title}
-                </p>
-              </Reveal>
-              <Reveal delay={100}>
-                <h2 className="display-lg mt-4">{c.headline}</h2>
-              </Reveal>
-              <Reveal delay={200}>
-                <p className="mt-6 text-lg text-muted-foreground">{c.summary}</p>
-              </Reveal>
-              <ul className="mt-10 border-t">
+              <ul className="border-t border-foreground md:col-span-8">
                 {c.items.map((item, i) => (
-                  <Reveal as="li" key={item.name} delay={i * 80} className="border-b">
+                  <Reveal as="li" key={item.name} delay={i * 70} className="border-b border-foreground/15">
                     <a
                       href={whatsappUrl({ service: item.name })}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center justify-between gap-6 py-6 transition-all duration-500 hover:pl-3"
+                      className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 py-5 transition-colors duration-300 hover:bg-accent md:gap-8 md:px-3"
                     >
-                      <div>
-                        <h3 className="text-2xl transition-colors duration-500 group-hover:text-accent">{item.name}</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-4">
-                        <span className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:inline-flex">
-                          <Clock className="size-3.5" /> {item.duration}
-                        </span>
-                        <span className="grid size-10 place-items-center rounded-full border transition-all duration-500 group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground">
-                          <ArrowUpRight className="size-4" />
-                        </span>
-                      </div>
+                      <span className="mono text-muted-foreground group-hover:text-accent-foreground">0{i + 1}</span>
+                      <span>
+                        <span className="block text-2xl tracking-[-0.035em] md:text-3xl">{item.name}</span>
+                        <span className="mt-1 block text-sm text-muted-foreground group-hover:text-accent-foreground">{item.description}</span>
+                      </span>
+                      <span className="flex items-center gap-2">
+                        <Tag shape="pill" className="hidden sm:inline-flex">{item.duration}</Tag>
+                        <ArrowUpRight className="size-5 transition-transform duration-500 group-hover:rotate-45" />
+                      </span>
                     </a>
                   </Reveal>
                 ))}
               </ul>
-              <Reveal className="mt-10">
-                <Button asChild variant="ink" size="xl">
-                  <a href={whatsappUrl({ service: c.title })} target="_blank" rel="noopener noreferrer">
-                    Agendar {c.title.toLowerCase()} <ArrowUpRight />
-                  </a>
-                </Button>
-              </Reveal>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        ))}
+        <p className="container-aura mono py-6 text-muted-foreground">* Duração aproximada. Consulte valores e disponibilidade pelo WhatsApp.</p>
+      </Sheet>
 
-      <section className="container-aura py-20 md:py-28">
-        <Reveal>
-          <div className="grid items-center gap-10 overflow-hidden rounded-[2rem] bg-gradient-blush p-8 md:grid-cols-2 md:p-14">
-            <div>
-              <p className="eyebrow text-accent">Pacote especial</p>
-              <h2 className="display-lg mt-4">
-                Dia da <em className="text-accent">noiva.</em>
-              </h2>
-              <p className="mt-6 text-muted-foreground">
-                Penteado, maquiagem com prova prévia, manicure e um espaço reservado para você e suas madrinhas. Também atendemos no local do evento.
-              </p>
-              <Button asChild variant="rouge" size="xl" className="mt-8">
+      <Sheet tone="accent">
+        <div className="container-aura grid items-end gap-10 pt-10 pb-20 md:grid-cols-12 md:pb-28">
+          <div className="md:col-span-7">
+            <Reveal variant="fade" className="flex gap-1">
+              <Tag>Pacote especial</Tag>
+              <Tag shape="pill">Noivas</Tag>
+            </Reveal>
+            <Reveal delay={100}>
+              <h2 className="display-xl mt-8">Dia da noiva</h2>
+            </Reveal>
+            <Reveal delay={200}>
+              <p className="mt-8 max-w-lg">Penteado, maquiagem com prova prévia, manicure e um espaço reservado para você e suas madrinhas. Também atendemos no local do evento.</p>
+              <Button asChild variant="solid" size="xl" className="mt-8">
                 <a href={whatsappUrl({ service: "Dia da noiva" })} target="_blank" rel="noopener noreferrer">
                   Quero saber mais <ArrowUpRight />
                 </a>
               </Button>
-            </div>
-            <div className="zoom-media aspect-square overflow-hidden rounded-full">
+            </Reveal>
+          </div>
+          <Reveal variant="clip" delay={200} className="md:col-span-5">
+            <div className="zoom-media aspect-[4/5] overflow-hidden">
               <img src={images.makeup} alt="Maquiagem de noiva com pele luminosa" className="h-full w-full object-cover" loading="lazy" />
             </div>
-          </div>
-        </Reveal>
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          * Duração aproximada. Consulte valores e disponibilidade pelo WhatsApp.
-        </p>
-      </section>
+          </Reveal>
+        </div>
+      </Sheet>
 
       <BookingCTA />
     </>

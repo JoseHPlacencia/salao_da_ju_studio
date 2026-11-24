@@ -1,21 +1,26 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SplitWords } from "@/components/motion/SplitWords";
 import { Reveal } from "@/components/motion/Reveal";
-import { Parallax } from "@/components/motion/Parallax";
+import { SplitWords } from "@/components/motion/SplitWords";
 import { Marquee } from "@/components/motion/Marquee";
-import { Magnetic } from "@/components/motion/Magnetic";
-import { RotatingBadge } from "@/components/motion/RotatingBadge";
-import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SplitChars } from "@/components/aura/SplitChars";
+import { Sheet } from "@/components/aura/Sheet";
+import { Tag } from "@/components/aura/Tag";
+import { MediaCard } from "@/components/aura/MediaCard";
+import { SectionLabel } from "@/components/aura/SectionLabel";
 import { StepsList } from "@/components/sections/StepsList";
 import { StatsRow } from "@/components/sections/StatsRow";
 import { TestimonialCard } from "@/components/sections/TestimonialCard";
 import { BookingCTA } from "@/components/sections/BookingCTA";
+import { useInView } from "@/hooks/use-in-view";
+import { site } from "@/config/site";
 import { images } from "@/data/images";
 import { serviceCategories } from "@/data/services";
 import { gallery, testimonials } from "@/data/content";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,277 +38,201 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+const heroSlides = [
+  { src: images.hero, alt: "Cliente com cabelos longos e ondulados" },
+  { src: images.curls, alt: "Cabelo cacheado volumoso e saudável" },
+  { src: images.nailsSoft, alt: "Unhas delicadas em tom nude" },
+  { src: images.makeup, alt: "Maquiagem com pele luminosa" },
+];
+
 function HomePage() {
   return (
     <>
       <Hero />
-      <section className="border-y bg-paper py-8">
-        <Marquee items={["Beleza que acolhe", "Cuidado que transforma", "Você em primeiro lugar", "Um tempo só seu"]} />
-      </section>
-      <AboutTeaser />
-      <ServicesPreview />
-      <QuoteBand />
-      <ExperienceSection />
-      <GalleryStrip />
-      <TestimonialsPreview />
+      <Statement />
+      <ServicesGrid />
+      <Ritual />
+      <GalleryRow />
       <BookingCTA />
+      <Testimonials />
     </>
   );
 }
 
 function Hero() {
-  return (
-    <section className="container-aura relative grid gap-12 pt-8 pb-20 md:pt-14 lg:grid-cols-12 lg:pb-28">
-      <div className="relative z-10 flex flex-col justify-center lg:col-span-7">
-        <Reveal variant="fade">
-          <p className="eyebrow mb-8 flex items-center gap-3 text-accent">
-            <span className="h-px w-10 bg-accent" /> Sua beleza, no seu tempo
-          </p>
-        </Reveal>
-        <h1 className="display-xl">
-          <SplitWords
-            baseDelay={1300}
-            lines={[{ text: "Um novo olhar." }, { text: "A sua melhor", italic: true, className: "text-accent" }, { text: "versão." }]}
-          />
-        </h1>
-        <Reveal delay={1800}>
-          <p className="mt-8 max-w-md text-lg text-muted-foreground">
-            Mais do que beleza, criamos momentos de cuidado. Um espaço acolhedor para você se sentir bem por inteiro.
-          </p>
-        </Reveal>
-        <Reveal delay={1950} className="mt-10 flex flex-wrap items-center gap-6">
-          <Magnetic>
-            <Button asChild variant="ink" size="xl">
-              <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-                Agende seu momento <ArrowUpRight />
-              </a>
-            </Button>
-          </Magnetic>
-          <Link to="/servicos" className="group inline-flex items-center gap-2 text-sm font-medium">
-            <span className="link-underline">Conheça nossos serviços</span>
-            <ArrowDown className="size-4 transition-transform duration-500 group-hover:translate-y-1" />
-          </Link>
-        </Reveal>
-        <Reveal delay={2100} className="mt-14 flex items-center gap-4 border-t pt-6">
-          <span className="tracking-[0.3em] text-champagne">★★★★★</span>
-          <p className="text-sm text-muted-foreground">
-            Beleza com intenção. <b className="text-foreground">Cuidado em cada detalhe.</b>
-          </p>
-        </Reveal>
-      </div>
+  const [slide, setSlide] = useState(0);
+  useEffect(() => {
+    const t = window.setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 4500);
+    return () => window.clearInterval(t);
+  }, []);
 
-      <div className="relative lg:col-span-5">
-        <Reveal variant="clip" delay={1200}>
-          <div className="aspect-[4/5] overflow-hidden rounded-t-full shadow-lift">
-            <Parallax speed={0.1}>
-              <img src={images.hero} alt="Profissional cuidando dos cabelos de uma cliente no salão" className="h-full w-full object-cover" />
-            </Parallax>
+  return (
+    <>
+      <section className="container-aura pt-14 pb-8 md:pt-6 md:pb-10">
+        <h1 className="wordmark -ml-[0.05em]">
+          <span className="sr-only">Studio Aura — salão de beleza</span>
+          <span aria-hidden>
+            <SplitChars text="Aura" baseDelay={1200} step={90} />
+          </span>
+        </h1>
+        <Reveal variant="fade" delay={1700} className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-sm text-sm">Salão de beleza · cabelo, unhas, maquiagem e tratamentos em {site.address.city}.</p>
+          <div className="flex gap-1">
+            <Tag>Beleza</Tag>
+            <Tag>Bem-estar</Tag>
+            <Tag shape="pill">desde 2014</Tag>
           </div>
         </Reveal>
-        <Reveal variant="scale" delay={1900} className="absolute -bottom-8 -left-6 md:-left-14">
-          <RotatingBadge text="Studio Aura ✳ Realce sua essência ✳ " />
-        </Reveal>
-        <Reveal variant="right" delay={2100} className="absolute top-10 -right-3 hidden md:block">
-          <div className="animate-float rounded-2xl bg-card/90 px-5 py-4 shadow-soft backdrop-blur">
-            <p className="eyebrow text-muted-foreground">Agenda aberta</p>
-            <p className="font-display text-xl italic">Terça a sábado</p>
-          </div>
-        </Reveal>
+      </section>
+
+      <div className="sticky top-0 h-[80vh] overflow-hidden bg-muted md:h-screen">
+        {heroSlides.map((s, i) => (
+          <img
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            aria-hidden={i !== slide}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1600ms] ease-[var(--ease-out-expo)]",
+              i === slide ? "scale-100 opacity-100" : "scale-110 opacity-0",
+            )}
+          />
+        ))}
+        <div className="absolute top-4 left-4 flex gap-1 text-ink-foreground mix-blend-difference md:left-6">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSlide(i)}
+              aria-label={`Ver foto ${i + 1}`}
+              className={cn("mono h-[1.35rem] rounded-full border border-current px-2 transition-colors", i === slide && "bg-ink-foreground text-ink")}
+            >
+              0{i + 1}
+            </button>
+          ))}
+        </div>
       </div>
-    </section>
+    </>
   );
 }
 
-function AboutTeaser() {
+function Statement() {
+  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.3 });
   return (
-    <section className="container-aura grid items-center gap-14 py-24 md:grid-cols-12 md:py-32">
-      <div className="relative md:col-span-5">
-        <Reveal variant="clip">
-          <div className="aspect-[3/4] overflow-hidden rounded-2xl">
-            <Parallax speed={0.06}>
-              <img src={images.interior} alt="Interior elegante e acolhedor do salão" className="h-full w-full object-cover" />
-            </Parallax>
-          </div>
-        </Reveal>
-        <Reveal variant="scale" delay={300} className="absolute -right-6 -bottom-10 hidden w-2/5 md:block">
-          <div className="aspect-square overflow-hidden rounded-full border-8 border-background shadow-lift">
-            <img src={images.nailsSoft} alt="Detalhe de unhas delicadas" className="h-full w-full object-cover" />
-          </div>
-        </Reveal>
-      </div>
-      <div className="md:col-span-6 md:col-start-7">
-        <Reveal variant="fade">
-          <p className="eyebrow mb-5 text-accent">Bem-vinda ao Studio Aura</p>
-        </Reveal>
-        <Reveal delay={100}>
-          <h2 className="display-lg">
-            Seu momento de <em className="text-accent">se reconectar.</em>
-          </h2>
-        </Reveal>
-        <Reveal delay={200}>
-          <p className="mt-8 text-lg text-muted-foreground">
-            Acreditamos que beleza não é sobre seguir padrões. É sobre descobrir o que faz você se sentir confiante, leve e autêntica.
-          </p>
-        </Reveal>
-        <Reveal delay={300}>
-          <p className="mt-4 text-muted-foreground">
-            Cada atendimento começa com uma boa conversa. Entendemos seu estilo, sua rotina e o que você deseja — para criar um resultado com a sua identidade.
-          </p>
-        </Reveal>
-        <Reveal delay={400} className="mt-12">
+    <Sheet tone="ink">
+      <div className="container-aura pt-16 pb-24 md:pt-24 md:pb-32">
+        <div ref={ref} className="statement max-w-5xl md:text-[clamp(2rem,4.2vw,4.25rem)]">
+          {inView ? (
+            <SplitWords
+              step={28}
+              lines={[
+                { text: "O Studio Aura é um salão de beleza que cria momentos de cuidado" },
+                { text: "para revelar a sua melhor versão.", className: "text-accent" },
+              ]}
+            />
+          ) : (
+            <span className="opacity-0">O Studio Aura é um salão de beleza que cria momentos de cuidado.</span>
+          )}
+        </div>
+        <div className="mt-20">
           <StatsRow />
-        </Reveal>
-        <Reveal delay={500} className="mt-10">
-          <Button asChild variant="line" size="xl">
-            <Link to="/sobre">
-              Conheça o studio <ArrowUpRight />
-            </Link>
+        </div>
+        <Reveal className="mt-14 flex flex-wrap gap-3">
+          <Button asChild variant="accent" size="xl">
+            <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+              Agende seu momento <ArrowUpRight />
+            </a>
+          </Button>
+          <Button asChild variant="frame-light" size="xl">
+            <Link to="/sobre">Conheça o studio</Link>
           </Button>
         </Reveal>
       </div>
-    </section>
+    </Sheet>
   );
 }
 
-function ServicesPreview() {
+function ServicesGrid() {
   return (
-    <section className="bg-paper py-24 md:py-32">
-      <div className="container-aura">
-        <SectionHeading
-          eyebrow="Cuidado de ponta a ponta"
-          title="O que podemos"
-          italic="fazer por você?"
-          side="Serviços pensados para valorizar sua beleza natural e tornar cada visita especial."
-        />
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <Sheet tone="light">
+      <div className="container-aura pt-8 pb-20 md:pb-28">
+        <SectionLabel action={<Link to="/servicos" className="eyebrow link-underline">Ver todos</Link>}>Serviços em destaque</SectionLabel>
+        <div className="grid gap-x-5 gap-y-14 md:grid-cols-2">
           {serviceCategories.map((c, i) => (
-            <Reveal key={c.id} delay={i * 120} className={i % 2 === 1 ? "lg:mt-16" : ""}>
-              <Link
-                to="/servicos"
-                hash={c.id}
-                className="zoom-media group relative block aspect-[3/4] overflow-hidden rounded-2xl"
-              >
-                <img src={c.image} alt={c.headline} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-veil" />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-ink-foreground">
-                  <p className="eyebrow text-champagne">
-                    {c.number} / {c.title}
-                  </p>
-                  <h3 className="mt-3 text-3xl">{c.headline}</h3>
-                  <p className="mt-3 max-h-0 overflow-hidden text-sm text-ink-foreground/80 opacity-0 transition-all duration-700 group-hover:max-h-24 group-hover:opacity-100">
-                    {c.summary}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm">
-                    Ver serviços <ArrowUpRight className="size-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </span>
-                </div>
+            <Reveal key={c.id} variant="clip" delay={(i % 2) * 120} className={i % 2 === 1 ? "md:mt-24" : ""}>
+              <Link to="/servicos" hash={c.id} className="block">
+                <MediaCard
+                  image={c.image}
+                  alt={c.headline}
+                  title={c.headline}
+                  tags={[c.title, c.items[0]?.name ?? "", "Agendar"].filter(Boolean)}
+                  count={c.items.length}
+                  aspect={i % 2 === 0 ? "aspect-[4/5]" : "aspect-[4/3]"}
+                />
               </Link>
             </Reveal>
           ))}
         </div>
-        <Reveal className="mt-12 text-center text-sm text-muted-foreground">
-          * Consulte nossa equipe para conhecer todos os procedimentos, valores e disponibilidade.
+        <Reveal className="mt-16 flex justify-center">
+          <Button asChild variant="frame" size="xl">
+            <Link to="/servicos">Ver todos os serviços</Link>
+          </Button>
         </Reveal>
       </div>
-    </section>
+    </Sheet>
   );
 }
 
-function QuoteBand() {
+function Ritual() {
   return (
-    <section className="relative overflow-hidden bg-gradient-ink py-28 text-center text-ink-foreground md:py-40">
-      <span className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 font-display text-[18rem] leading-none text-accent/30" aria-hidden>
-        “
-      </span>
-      <div className="container-aura relative">
+    <Sheet tone="muted" className="[--step-bg:var(--muted)]">
+      <div className="container-aura pt-8 pb-20 md:pb-28">
+        <SectionLabel>O ritual Aura</SectionLabel>
         <Reveal>
-          <p className="display-lg mx-auto max-w-5xl">
-            Não é sobre mudar quem você é. É sobre <em className="text-champagne">revelar o que já existe.</em>
-          </p>
+          <p className="display-lg max-w-4xl">Mais que um atendimento — uma experiência pensada em você.</p>
         </Reveal>
-        <Reveal delay={200}>
-          <p className="eyebrow mt-10 text-ink-muted">Studio Aura — beleza com propósito</p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function ExperienceSection() {
-  return (
-    <section className="container-aura grid items-center gap-14 py-24 md:grid-cols-12 md:py-32">
-      <div className="md:col-span-6">
-        <Reveal variant="fade">
-          <p className="eyebrow mb-5 text-accent">Mais que um atendimento</p>
-        </Reveal>
-        <Reveal delay={100}>
-          <h2 className="display-lg">
-            Uma experiência <em className="text-accent">pensada em você.</em>
-          </h2>
-        </Reveal>
-        <div className="mt-10">
+        <div className="mt-14">
           <StepsList />
         </div>
-        <Reveal className="mt-10">
-          <Button asChild variant="rouge" size="xl">
-            <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-              Quero viver essa experiência <ArrowUpRight />
-            </a>
-          </Button>
-        </Reveal>
       </div>
-      <Reveal variant="clip" delay={200} className="md:col-span-5 md:col-start-8">
-        <div className="aspect-[4/5] overflow-hidden rounded-b-full">
-          <img src={images.wash} alt="Cliente relaxando durante a lavagem dos cabelos" className="h-full w-full animate-ken-burns object-cover" />
-        </div>
-      </Reveal>
-    </section>
+    </Sheet>
   );
 }
 
-function GalleryStrip() {
+function GalleryRow() {
   const items = gallery.slice(0, 8);
   return (
-    <section className="overflow-hidden py-20">
-      <div className="container-aura mb-12 flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading eyebrow="Inspire-se" title="Nosso trabalho," italic="em detalhes." />
-        <Reveal>
-          <Button asChild variant="line" size="xl">
-            <Link to="/galeria">
-              Ver galeria completa <ArrowUpRight />
-            </Link>
-          </Button>
-        </Reveal>
+    <Sheet tone="light">
+      <div className="container-aura pt-8">
+        <SectionLabel action={<Link to="/galeria" className="eyebrow link-underline">Ver galeria</Link>}>Galeria</SectionLabel>
       </div>
-      <div className="flex w-max gap-5 animate-marquee hover:[animation-play-state:paused]">
-        {[...items, ...items].map((g, i) => (
-          <div key={i} className="zoom-media h-72 w-56 shrink-0 overflow-hidden rounded-2xl md:h-96 md:w-72">
-            <img src={g.src} alt={i < items.length ? g.alt : ""} aria-hidden={i >= items.length} className="h-full w-full object-cover" loading="lazy" />
-          </div>
+      <div className="border-y border-foreground py-6">
+        <Marquee items={["Cabelo", "Unhas", "Maquiagem", "Tratamentos"]} />
+      </div>
+      <div className="scrollbar-none flex gap-4 overflow-x-auto px-4 py-10 md:px-6">
+        {items.map((g, i) => (
+          <Reveal key={g.src} variant="fade" delay={i * 60} className="w-64 shrink-0 md:w-80">
+            <MediaCard image={g.src} alt={g.alt} title={g.alt} tags={[g.category]} count={i + 1} aspect="aspect-[3/4]" />
+          </Reveal>
         ))}
       </div>
-    </section>
+    </Sheet>
   );
 }
 
-function TestimonialsPreview() {
+function Testimonials() {
   return (
-    <section className="bg-gradient-blush py-24 md:py-32">
-      <div className="container-aura">
-        <SectionHeading eyebrow="Palavras que nos inspiram" title="Quem vive," italic="recomenda." side="Cada sorriso na saída é parte da nossa história." />
-        <div className="mt-16 grid gap-6 md:grid-cols-3">
-          {testimonials.slice(0, 3).map((t, i) => (
-            <Reveal key={t.name} delay={i * 120}>
-              <TestimonialCard {...t} />
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="mt-10 text-center">
-          <Link to="/depoimentos" className="link-underline text-sm font-medium">
-            Ler todos os depoimentos →
-          </Link>
-        </Reveal>
+    <Sheet tone="accent" className="-mb-px">
+      <div className="container-aura pt-8 pb-8">
+        <SectionLabel action={<Link to="/depoimentos" className="eyebrow link-underline">Ver todos</Link>}>Quem vive, recomenda</SectionLabel>
       </div>
-    </section>
+      <div className="scrollbar-none flex gap-4 overflow-x-auto px-4 pb-4 md:px-6">
+        {testimonials.map((t, i) => (
+          <Reveal key={t.name} variant="fade" delay={i * 80} className="w-80 shrink-0 md:w-96">
+            <TestimonialCard {...t} index={i + 1} />
+          </Reveal>
+        ))}
+      </div>
+    </Sheet>
   );
 }

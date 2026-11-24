@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { TestimonialCard } from "@/components/sections/TestimonialCard";
 import { BookingCTA } from "@/components/sections/BookingCTA";
 import { Reveal } from "@/components/motion/Reveal";
+import { Sheet } from "@/components/aura/Sheet";
+import { Tag } from "@/components/aura/Tag";
+import { SectionLabel } from "@/components/aura/SectionLabel";
 import { testimonials } from "@/data/content";
 import { images } from "@/data/images";
 import { cn } from "@/lib/utils";
@@ -33,7 +35,7 @@ function TestimonialsPage() {
     if (paused) return;
     const t = window.setInterval(() => setActive((a) => (a + 1) % testimonials.length), 6000);
     return () => window.clearInterval(t);
-  }, [paused]);
+  }, [paused, active]);
 
   const featured = testimonials[active] ?? testimonials[0]!;
 
@@ -41,69 +43,50 @@ function TestimonialsPage() {
     <>
       <PageHero
         eyebrow="Depoimentos"
-        title="Quem vive,"
-        italic="recomenda."
-        description="Cada sorriso na saída é parte da nossa história. Estas são algumas das palavras que nos inspiram todos os dias."
+        tags={["5 estrelas"]}
+        title="Clientes"
+        description="Quem vive, recomenda. Cada sorriso na saída é parte da nossa história."
         image={images.brushing}
         imageAlt="Cliente feliz com o resultado da escova"
       />
 
-      <section
-        className="relative overflow-hidden bg-gradient-ink py-24 text-ink-foreground md:py-32"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <span className="pointer-events-none absolute -top-10 left-6 font-display text-[16rem] leading-none text-accent/30" aria-hidden>
-          “
-        </span>
-        <div className="container-aura relative">
-          <div key={active} className="animate-in fade-in slide-in-from-bottom-6 duration-700" aria-live="polite">
-            <p className="display-md max-w-4xl">“{featured.text}”</p>
-            <p className="mt-10 flex items-center gap-4">
-              <span className="grid size-14 place-items-center rounded-full bg-accent font-display text-xl italic text-accent-foreground">{featured.initials}</span>
-              <span>
-                <b className="font-semibold">{featured.name}</b>
-                <br />
-                <span className="text-sm text-ink-muted">{featured.service}</span>
-              </span>
-            </p>
-          </div>
-          <div className="mt-14 flex items-center gap-6">
-            <div className="flex gap-2">
-              <button type="button" onClick={() => setActive((a) => (a - 1 + testimonials.length) % testimonials.length)} className="grid size-12 place-items-center rounded-full border border-ink-foreground/30 transition-colors hover:bg-ink-foreground hover:text-ink" aria-label="Depoimento anterior">
-                <ChevronLeft className="size-4" />
-              </button>
-              <button type="button" onClick={() => setActive((a) => (a + 1) % testimonials.length)} className="grid size-12 place-items-center rounded-full border border-ink-foreground/30 transition-colors hover:bg-ink-foreground hover:text-ink" aria-label="Próximo depoimento">
-                <ChevronRight className="size-4" />
-              </button>
+      <Sheet tone="ink">
+        <div className="container-aura pt-8 pb-20 md:pb-28" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+          <SectionLabel>Em destaque</SectionLabel>
+          <div key={active} className="min-h-[18rem] animate-in fade-in slide-in-from-bottom-4 duration-700 md:min-h-[22rem]" aria-live="polite">
+            <p className="statement max-w-5xl md:text-[clamp(2rem,4vw,4rem)]">“{featured.text}”</p>
+            <div className="mt-10 flex flex-wrap items-center gap-2">
+              <span className="eyebrow mr-2">{featured.name}</span>
+              <Tag>Cliente</Tag>
+              <Tag shape="pill">{featured.service}</Tag>
             </div>
-            <div className="flex flex-1 gap-2">
-              {testimonials.map((t, i) => (
-                <button
-                  key={t.name}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  aria-label={`Ver depoimento de ${t.name}`}
-                  className={cn("h-1 flex-1 rounded-full transition-colors duration-500", i === active ? "bg-champagne" : "bg-ink-foreground/20 hover:bg-ink-foreground/40")}
+          </div>
+          <div className="mt-12 flex gap-1">
+            {testimonials.map((t, i) => (
+              <button key={t.name} type="button" onClick={() => setActive(i)} aria-label={`Ver depoimento de ${t.name}`} className="relative h-6 flex-1">
+                <span className="absolute inset-x-0 top-1/2 h-px bg-ink-foreground/25" />
+                <span
+                  className={cn("absolute top-1/2 left-0 h-px bg-accent", i === active && !paused ? "w-full transition-[width] duration-[6000ms] ease-linear" : i < active ? "w-full" : "w-0")}
                 />
-              ))}
-            </div>
+              </button>
+            ))}
           </div>
         </div>
-      </section>
+      </Sheet>
 
-      <section className="container-aura py-20 md:py-28">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={(i % 3) * 120}>
-              <TestimonialCard {...t} />
-            </Reveal>
-          ))}
+      <Sheet tone="light">
+        <div className="container-aura pt-8 pb-20 md:pb-28">
+          <SectionLabel>Todos os depoimentos</SectionLabel>
+          <div className="grid gap-x-5 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <Reveal key={t.name} variant="clip" delay={(i % 3) * 100}>
+                <TestimonialCard {...t} index={i + 1} />
+              </Reveal>
+            ))}
+          </div>
+          <p className="mono mt-12 text-muted-foreground">* Depoimentos ilustrativos — substitua por avaliações reais de suas clientes antes de publicar.</p>
         </div>
-        <p className="mt-10 text-center text-sm text-muted-foreground">
-          * Depoimentos ilustrativos — substitua por avaliações reais de suas clientes antes de publicar.
-        </p>
-      </section>
+      </Sheet>
 
       <BookingCTA />
     </>

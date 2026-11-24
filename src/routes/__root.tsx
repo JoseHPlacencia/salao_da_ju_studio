@@ -13,31 +13,22 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { TopBar } from "@/components/layout/TopBar";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { PageLoader } from "@/components/motion/PageLoader";
-import { CustomCursor } from "@/components/motion/CustomCursor";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="display-xl text-accent italic">404</h1>
-        <h2 className="mt-4 text-3xl text-foreground">Página não encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A página que você procura não existe ou mudou de endereço.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent"
-          >
-            Voltar ao início
-          </Link>
-        </div>
+    <div className="flex min-h-screen flex-col justify-between bg-accent p-4 text-accent-foreground md:p-6">
+      <span className="text-3xl font-medium tracking-[-0.06em]">Aura</span>
+      <div className="text-center">
+        <h1 className="display-lg">Página não encontrada</h1>
+        <Link to="/" className="mt-8 inline-flex rounded-[3px] border border-current px-5 py-3 text-sm font-medium transition-colors hover:bg-foreground hover:text-background">
+          Voltar ao início
+        </Link>
       </div>
+      <span className="text-xs">© Studio Aura</span>
     </div>
   );
 }
@@ -94,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Cabelo, unhas, maquiagem e tratamentos com atendimento personalizado no Studio Aura.",
       },
-      { name: "theme-color", content: "#f6f1ea" },
+      { name: "theme-color", content: "#ffffff" },
       { property: "og:site_name", content: "Studio Aura" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
@@ -110,7 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Hanken+Grotesk:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap",
       },
     ],
   }),
@@ -141,15 +132,13 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <PageLoader />
-      <CustomCursor />
-      <AnnouncementBar />
-      <SiteHeader />
+      <TopBar />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <main key={pathname} className="animate-page-in">
         <Outlet />
       </main>
       <SiteFooter />
-      <WhatsAppFloat />
+      <BottomNav />
     </QueryClientProvider>
   );
 }

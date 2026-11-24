@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-/** Tela de abertura com contador, exibida ao abrir o site. */
+/** Tela de abertura em coral com contador gigante. */
 export function PageLoader() {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
@@ -13,14 +13,14 @@ export function PageLoader() {
     }
     let value = 0;
     const timer = window.setInterval(() => {
-      value = Math.min(100, value + Math.ceil(Math.random() * 12));
+      value = Math.min(100, value + Math.ceil(Math.random() * 14));
       setProgress(value);
       if (value >= 100) {
         window.clearInterval(timer);
-        window.setTimeout(() => setDone(true), 200);
-        window.setTimeout(() => setGone(true), 1200);
+        window.setTimeout(() => setDone(true), 150);
+        window.setTimeout(() => setGone(true), 1150);
       }
-    }, 40);
+    }, 38);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -28,22 +28,17 @@ export function PageLoader() {
 
   return (
     <div
-      className={`aura-loader fixed inset-0 z-[90] flex flex-col justify-between bg-gradient-ink p-6 text-ink-foreground md:p-12 ${done ? "is-done" : ""}`}
+      className={`aura-loader fixed inset-0 z-[90] flex flex-col justify-between bg-accent p-4 text-accent-foreground md:p-6 ${done ? "is-done" : ""}`}
       role="status"
       aria-label="Carregando Studio Aura"
     >
-      <span className="eyebrow text-ink-muted">Studio Aura · Beleza & bem-estar</span>
-      <div className="font-display text-[22vw] leading-none italic md:text-[16vw]">
-        aura<span className="text-accent">.</span>
+      <div className="flex items-start justify-between">
+        <span className="text-3xl font-medium tracking-[-0.06em]">Aura</span>
+        <span className="mono rounded-full border border-current px-2 py-0.5">carregando</span>
       </div>
-      <div>
-        <div className="mb-4 flex items-end justify-between">
-          <span className="eyebrow text-ink-muted">Um momento só seu</span>
-          <span className="font-display text-5xl tabular-nums md:text-7xl">{String(progress).padStart(2, "0")}</span>
-        </div>
-        <div className="h-px w-full bg-ink-muted/30">
-          <div className="h-px bg-champagne transition-[width] duration-100" style={{ width: `${progress}%` }} />
-        </div>
+      <div className="flex items-end justify-between">
+        <span className="wordmark tabular-nums">{String(progress).padStart(2, "0")}</span>
+        <span className="mono mb-4">Um momento só seu</span>
       </div>
     </div>
   );

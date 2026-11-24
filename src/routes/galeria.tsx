@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { BookingCTA } from "@/components/sections/BookingCTA";
 import { Reveal } from "@/components/motion/Reveal";
+import { Sheet } from "@/components/aura/Sheet";
+import { Tag } from "@/components/aura/Tag";
+import { MediaCard } from "@/components/aura/MediaCard";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { gallery, galleryCategories, type GalleryCategory } from "@/data/content";
 import { images } from "@/data/images";
@@ -32,79 +35,62 @@ function GalleryPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const items = filter === "Todos" ? gallery : gallery.filter((g) => g.category === filter);
   const current = openIndex !== null ? items[openIndex] : undefined;
-
-  const step = (dir: 1 | -1) =>
-    setOpenIndex((i) => (i === null ? i : (i + dir + items.length) % items.length));
+  const step = (dir: 1 | -1) => setOpenIndex((i) => (i === null ? i : (i + dir + items.length) % items.length));
 
   return (
     <>
       <PageHero
         eyebrow="Galeria"
-        title="Nosso trabalho,"
-        italic="em detalhes."
-        description="Uma amostra do carinho que colocamos em cada atendimento. Toque em uma foto para ampliar."
+        tags={[`${gallery.length} fotos`]}
+        title="Galeria"
+        description="Nosso trabalho, em detalhes. Uma amostra do carinho que colocamos em cada atendimento."
         image={images.curls}
         imageAlt="Cliente com cabelo cacheado volumoso"
       />
 
-      <section className="container-aura pb-20 md:pb-28">
-        <Reveal className="mb-12 flex flex-wrap gap-2">
-          {(["Todos", ...galleryCategories] as Filter[]).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              aria-pressed={filter === f}
-              className={cn(
-                "eyebrow rounded-full border px-5 py-2.5 transition-all duration-500",
-                filter === f ? "border-primary bg-primary text-primary-foreground" : "hover:border-accent hover:text-accent",
-              )}
-            >
-              {f}
-            </button>
-          ))}
-        </Reveal>
+      <Sheet tone="light">
+        <div className="container-aura pt-8 pb-20 md:pb-28">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-10">
+            <h2 className="eyebrow">Por categoria</h2>
+            <div className="flex flex-wrap gap-1">
+              {(["Todos", ...galleryCategories] as Filter[]).map((f) => (
+                <button key={f} type="button" onClick={() => setFilter(f)} aria-pressed={filter === f}>
+                  <Tag shape="pill" className={cn("h-7 px-3 transition-colors", filter === f ? "border-foreground bg-foreground text-background" : "hover:bg-accent")}>
+                    {f} {f === "Todos" ? gallery.length : gallery.filter((g) => g.category === f).length}
+                  </Tag>
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <div key={filter} className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {items.map((g, i) => (
-            <Reveal key={g.src + filter} variant="scale" delay={(i % 6) * 80} className="mb-5 break-inside-avoid">
-              <button
-                type="button"
-                onClick={() => setOpenIndex(i)}
-                className="zoom-media group relative block w-full overflow-hidden rounded-2xl"
-                aria-label={`Ampliar: ${g.alt}`}
-              >
-                <img src={g.src} alt={g.alt} loading="lazy" className={cn("w-full object-cover", g.tall ? "aspect-[3/4]" : "aspect-square")} />
-                <span className="absolute inset-0 flex items-end justify-between bg-veil p-5 text-left text-ink-foreground opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  <span>
-                    <span className="eyebrow text-champagne">{g.category}</span>
-                    <span className="mt-1 block font-display text-xl">{g.alt}</span>
-                  </span>
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink-foreground text-ink">
-                    <Plus className="size-4" />
-                  </span>
-                </span>
-              </button>
-            </Reveal>
-          ))}
+          <div key={filter} className="grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((g, i) => (
+              <Reveal key={g.src} variant="clip" delay={(i % 3) * 90}>
+                <button type="button" onClick={() => setOpenIndex(i)} className="block w-full text-left" aria-label={`Ampliar: ${g.alt}`}>
+                  <MediaCard image={g.src} alt={g.alt} title={g.alt} tags={[g.category]} count={i + 1} aspect={g.tall ? "aspect-[3/4]" : "aspect-[4/3]"} />
+                </button>
+              </Reveal>
+            ))}
+          </div>
         </div>
-      </section>
+      </Sheet>
 
       <Dialog open={!!current} onOpenChange={(o) => !o && setOpenIndex(null)}>
-        <DialogContent className="max-w-4xl border-none bg-ink p-2 text-ink-foreground sm:rounded-2xl">
+        <DialogContent className="max-w-5xl rounded-none border-none bg-ink p-3 text-ink-foreground sm:rounded-[4px]">
           {current ? (
             <figure className="animate-in fade-in zoom-in-95 duration-500">
-              <img src={current.src.replace("w=1200", "w=1800")} alt={current.alt} className="max-h-[78vh] w-full rounded-xl object-contain" />
-              <figcaption className="flex items-center justify-between gap-4 px-3 py-4">
-                <div>
-                  <DialogTitle className="font-display text-xl font-normal">{current.alt}</DialogTitle>
-                  <span className="eyebrow text-champagne">{current.category}</span>
+              <img src={current.src.replace("w=1200", "w=1800")} alt={current.alt} className="max-h-[78vh] w-full object-contain" />
+              <figcaption className="flex items-center justify-between gap-4 pt-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <DialogTitle className="text-sm font-medium">{current.alt}</DialogTitle>
+                  <Tag>{current.category}</Tag>
+                  <Tag shape="circle">{(openIndex ?? 0) + 1}</Tag>
                 </div>
-                <div className="flex gap-2">
-                  <button type="button" onClick={() => step(-1)} className="grid size-10 place-items-center rounded-full border border-ink-foreground/30 transition-colors hover:bg-ink-foreground hover:text-ink" aria-label="Foto anterior">
+                <div className="flex gap-1">
+                  <button type="button" onClick={() => step(-1)} className="grid size-9 place-items-center rounded-[3px] border border-ink-foreground/40 hover:bg-ink-foreground hover:text-ink" aria-label="Foto anterior">
                     <ChevronLeft className="size-4" />
                   </button>
-                  <button type="button" onClick={() => step(1)} className="grid size-10 place-items-center rounded-full border border-ink-foreground/30 transition-colors hover:bg-ink-foreground hover:text-ink" aria-label="Próxima foto">
+                  <button type="button" onClick={() => step(1)} className="grid size-9 place-items-center rounded-[3px] border border-ink-foreground/40 hover:bg-ink-foreground hover:text-ink" aria-label="Próxima foto">
                     <ChevronRight className="size-4" />
                   </button>
                 </div>
