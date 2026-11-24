@@ -5,7 +5,7 @@
 export const site = {
   name: "Studio Aura",
   tagline: "Beleza & bem-estar",
-  whatsappNumber: "5527999999999",
+  whatsappNumber: "5527995012859",
   instagram: "seusalao",
   email: "ola@studioaura.com.br",
   address: { street: "Rua Exemplo, 123", district: "Praia do Canto", city: "Vitória — ES" },
