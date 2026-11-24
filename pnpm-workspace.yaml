@@ -1,0 +1,4 @@
+allowBuilds:
+  '@tanstack/react-start': false
+  '@tanstack/router-plugin': false
+  esbuild: true
