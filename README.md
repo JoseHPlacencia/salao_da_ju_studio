@@ -1,24 +1,28 @@
-# Beleza In Bloom Studio
+# Da Ju Hair
 
-Melhore minha página web, coloque mais páginas, ajuste os arquivos para que fiquem mais organizados, mude a fonte, o design, coloque mais animações, esse site é para um salão de beleza
+Site do salão de beleza **Da Ju Hair**: início, o studio, serviços, galeria, depoimentos e contato, com agendamento pelo WhatsApp.
 
-This project was built with [Lovable](https://lovable.dev).
+Feito com [TanStack Start](https://tanstack.com/start) (React + Vite) e Tailwind CSS.
 
-## Build with Lovable
+## Rodar no computador
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e13aa74f-0749-4181-9cdb-74af75774df3).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Precisa do [Node.js](https://nodejs.org) 20 ou mais novo.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm install
+npm run dev      # abre em http://localhost:8080
 ```
+
+Outros comandos: `npm run build` (gera a versão para publicar), `npm test` e `npm run lint`.
+
+## Onde trocar as informações
+
+- **Telefone/WhatsApp, endereço, horários, Instagram e e-mail:** `src/config/site.ts`
+- **Textos de serviços, depoimentos, equipe e FAQ:** `src/data/`
+- **Fotos de demonstração:** `src/data/images.ts` (troque pelas fotos reais do salão)
+- **Foto da capa (retrato sem fundo):** coloque o arquivo em `public/images/da-ju-portrait.webp`
+
+## Publicar
+
+O build gera um servidor (SSR), então o GitHub Pages não serve. Use **Cloudflare Pages**, **Netlify** ou **Vercel**:
+conecte o repositório do GitHub, comando de build `npm run build` e pronto. Cada `git push` na `main` publica de novo.

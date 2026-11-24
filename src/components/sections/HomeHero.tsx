@@ -9,8 +9,8 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 
 /**
- * Capa do início: o "Aura" gigante fica atrás do retrato. Ao rolar, o retrato some
- * (sobe e é recortado de baixo para cima) e o "Aura" encolhe até virar o logo do topo.
+ * Capa do início: o nome "Da Ju Hair" gigante fica atrás do retrato. Ao rolar, o retrato some
+ * (sobe e é recortado de baixo para cima) e o nome encolhe até virar o logo do topo.
  * A posição final é medida no logo do topo ([data-aura-logo]) para a troca ser invisível.
  */
 export function HomeHero() {
@@ -34,7 +34,7 @@ export function HomeHero() {
       const p = clamp01(-runway.getBoundingClientRect().top / total);
       const e = easeInOut(p);
 
-      // "Aura" → logo do topo
+      // Nome gigante → logo do topo
       const target = document.querySelector<HTMLElement>("[data-aura-logo]");
       if (target && mark.offsetWidth > 0) {
         const hdr = target.getBoundingClientRect();
@@ -89,10 +89,10 @@ export function HomeHero() {
     <section ref={runwayRef} className="relative h-[180svh]">
       <div ref={stageRef} className="sticky top-0 h-svh overflow-hidden bg-background">
         <div className="container-aura pt-[22svh] lg:pt-6">
-          <h1 className="wordmark">
-            <span className="sr-only">Studio Aura — salão de beleza</span>
+          <h1 className="wordmark-name">
+            <span className="sr-only">Da Ju Hair — salão de beleza</span>
             <span ref={markRef} aria-hidden className="-ml-[0.05em] inline-block origin-top-left will-change-transform">
-              <SplitChars text="Aura" baseDelay={1200} step={90} />
+              <SplitChars text="Da Ju Hair" baseDelay={1200} step={90} />
             </span>
           </h1>
         </div>
@@ -105,9 +105,12 @@ export function HomeHero() {
           <div className="animate-portrait-in">
             <img
               src={images.heroPortrait}
-              alt="Cabeleireira do Studio Aura segurando uma tesoura"
+              alt="Cabeleireira do Da Ju Hair segurando uma tesoura"
               className="h-[84svh] w-auto max-w-none object-contain lg:h-[90svh]"
               fetchPriority="high"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
             />
           </div>
         </div>

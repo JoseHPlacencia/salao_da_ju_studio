@@ -20,10 +20,10 @@ import { whatsappUrl } from "@/lib/whatsapp";
 export const Route = createFileRoute("/contato")({
   head: () => ({
     meta: [
-      { title: "Contato e agendamento | Studio Aura" },
-      { name: "description", content: "Agende seu horário no Studio Aura pelo WhatsApp. Endereço, horários de funcionamento e dúvidas frequentes." },
-      { property: "og:title", content: "Contato e agendamento | Studio Aura" },
-      { property: "og:description", content: "Fale com a gente e agende seu momento no Studio Aura." },
+      { title: "Contato e agendamento | Da Ju Hair" },
+      { name: "description", content: "Agende seu horário no Da Ju Hair pelo WhatsApp. Endereço, horários de funcionamento e dúvidas frequentes." },
+      { property: "og:title", content: "Contato e agendamento | Da Ju Hair" },
+      { property: "og:description", content: "Fale com a gente e agende seu momento no Da Ju Hair." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.salonChairs },
       { name: "twitter:card", content: "summary_large_image" },
@@ -61,7 +61,7 @@ function ContactPage() {
         title="Contato"
         description="Vamos marcar seu momento? Preencha o formulário e sua mensagem chega pronta no nosso WhatsApp."
         image={images.salonChairs}
-        imageAlt="Cadeiras do salão Studio Aura"
+        imageAlt="Cadeiras do salão Da Ju Hair"
       />
 
       <Sheet tone="light">
@@ -154,7 +154,7 @@ function ContactPage() {
         <Reveal variant="clip">
           <div className="aspect-[4/3] md:aspect-[21/8]">
             <iframe
-              title="Mapa com a localização do Studio Aura"
+              title="Mapa com a localização do Da Ju Hair"
               src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
               className="h-full w-full grayscale"
               loading="lazy"

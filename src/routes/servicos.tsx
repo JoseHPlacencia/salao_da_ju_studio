@@ -13,9 +13,9 @@ import { whatsappUrl } from "@/lib/whatsapp";
 export const Route = createFileRoute("/servicos")({
   head: () => ({
     meta: [
-      { title: "Serviços | Studio Aura" },
-      { name: "description", content: "Cortes, coloração, mechas, manicure, nail design, maquiagem, noivas e tratamentos capilares no Studio Aura." },
-      { property: "og:title", content: "Serviços | Studio Aura" },
+      { title: "Serviços | Da Ju Hair" },
+      { name: "description", content: "Cortes, coloração, mechas, manicure, nail design, maquiagem, noivas e tratamentos capilares no Da Ju Hair." },
+      { property: "og:title", content: "Serviços | Da Ju Hair" },
       { property: "og:description", content: "Cabelo, unhas, maquiagem e tratamentos com atendimento personalizado." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.haircut },

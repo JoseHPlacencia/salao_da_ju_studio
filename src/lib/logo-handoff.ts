@@ -1,6 +1,6 @@
 /**
  * Passagem do logo gigante da capa para o logo pequeno do topo.
- * A capa avisa quando o "Aura" terminou de encolher; o topo então mostra o seu logo.
+ * A capa avisa quando o nome da capa terminou de encolher; o topo então mostra o seu logo.
  */
 const EVENT = "aura:logo-docked";
 let docked = false;

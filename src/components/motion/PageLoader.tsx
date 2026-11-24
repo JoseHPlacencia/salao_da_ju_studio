@@ -30,10 +30,10 @@ export function PageLoader() {
     <div
       className={`aura-loader fixed inset-0 z-[90] flex flex-col justify-between bg-accent p-4 text-accent-foreground md:p-6 ${done ? "is-done" : ""}`}
       role="status"
-      aria-label="Carregando Studio Aura"
+      aria-label="Carregando Da Ju Hair"
     >
       <div className="flex items-start justify-between">
-        <span className="text-3xl font-medium tracking-[-0.06em]">Aura</span>
+        <span className="text-3xl font-medium tracking-[-0.06em]">Da Ju Hair</span>
         <span className="mono rounded-full border border-current px-2 py-0.5">carregando</span>
       </div>
       <div className="flex items-end justify-between">
