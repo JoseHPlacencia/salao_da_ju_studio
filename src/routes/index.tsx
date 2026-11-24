@@ -5,17 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { Marquee } from "@/components/motion/Marquee";
-import { SplitChars } from "@/components/aura/SplitChars";
 import { Sheet } from "@/components/aura/Sheet";
-import { Tag } from "@/components/aura/Tag";
 import { MediaCard } from "@/components/aura/MediaCard";
 import { SectionLabel } from "@/components/aura/SectionLabel";
 import { StepsList } from "@/components/sections/StepsList";
 import { StatsRow } from "@/components/sections/StatsRow";
 import { TestimonialCard } from "@/components/sections/TestimonialCard";
 import { BookingCTA } from "@/components/sections/BookingCTA";
+import { HomeHero } from "@/components/sections/HomeHero";
 import { useInView } from "@/hooks/use-in-view";
-import { site } from "@/config/site";
 import { images } from "@/data/images";
 import { serviceCategories } from "@/data/services";
 import { gallery, testimonials } from "@/data/content";
@@ -48,7 +46,8 @@ const heroSlides = [
 function HomePage() {
   return (
     <>
-      <Hero />
+      <HomeHero />
+      <HeroSlides />
       <Statement />
       <ServicesGrid />
       <Ritual />
@@ -59,7 +58,7 @@ function HomePage() {
   );
 }
 
-function Hero() {
+function HeroSlides() {
   const [slide, setSlide] = useState(0);
   useEffect(() => {
     const t = window.setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 4500);
@@ -67,52 +66,34 @@ function Hero() {
   }, []);
 
   return (
-    <>
-      <section className="container-aura pt-14 pb-8 md:pt-6 md:pb-10">
-        <h1 className="wordmark -ml-[0.05em]">
-          <span className="sr-only">Studio Aura — salão de beleza</span>
-          <span aria-hidden>
-            <SplitChars text="Aura" baseDelay={1200} step={90} />
-          </span>
-        </h1>
-        <Reveal variant="fade" delay={1700} className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <p className="max-w-sm text-sm">Salão de beleza · cabelo, unhas, maquiagem e tratamentos em {site.address.city}.</p>
-          <div className="flex gap-1">
-            <Tag>Beleza</Tag>
-            <Tag>Bem-estar</Tag>
-            <Tag shape="pill">desde 2014</Tag>
-          </div>
-        </Reveal>
-      </section>
-
-      <div className="sticky top-0 h-[80vh] overflow-hidden bg-muted md:h-screen">
-        {heroSlides.map((s, i) => (
-          <img
-            key={s.src}
-            src={s.src}
-            alt={s.alt}
-            aria-hidden={i !== slide}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1600ms] ease-[var(--ease-out-expo)]",
-              i === slide ? "scale-100 opacity-100" : "scale-110 opacity-0",
-            )}
-          />
+    // Sobe por cima do fim da capa (margem negativa) para não deixar um vazio branco.
+    <div className="sticky top-0 -mt-[60svh] h-[80vh] overflow-hidden rounded-t-[var(--radius)] bg-muted md:h-screen">
+      {heroSlides.map((s, i) => (
+        <img
+          key={s.src}
+          src={s.src}
+          alt={s.alt}
+          aria-hidden={i !== slide}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1600ms] ease-[var(--ease-out-expo)]",
+            i === slide ? "scale-100 opacity-100" : "scale-110 opacity-0",
+          )}
+        />
+      ))}
+      <div className="absolute top-14 left-4 flex gap-1 text-ink-foreground mix-blend-difference md:top-20 md:left-6">
+        {heroSlides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setSlide(i)}
+            aria-label={`Ver foto ${i + 1}`}
+            className={cn("mono h-[1.35rem] rounded-full border border-current px-2 transition-colors", i === slide && "bg-ink-foreground text-ink")}
+          >
+            0{i + 1}
+          </button>
         ))}
-        <div className="absolute top-4 left-4 flex gap-1 text-ink-foreground mix-blend-difference md:left-6">
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setSlide(i)}
-              aria-label={`Ver foto ${i + 1}`}
-              className={cn("mono h-[1.35rem] rounded-full border border-current px-2 transition-colors", i === slide && "bg-ink-foreground text-ink")}
-            >
-              0{i + 1}
-            </button>
-          ))}
-        </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -5,18 +5,18 @@ import { whatsappUrl } from "@/lib/whatsapp";
 import { Tag } from "@/components/aura/Tag";
 import { LiveClock } from "@/components/aura/LiveClock";
 import { cn } from "@/lib/utils";
+import { isHeroLogoDocked, onHeroLogoDocked } from "@/lib/logo-handoff";
 
 /** Barra superior fixa: logo pequeno e etiquetas. O modo "difference" mantém contraste sobre qualquer fundo. */
 export function TopBar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
+  // No início, o logo pequeno só aparece quando o "Aura" gigante da capa termina de encolher.
+  const [docked, setDocked] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 320);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    setDocked(isHeroLogoDocked());
+    return onHeroLogoDocked(setDocked);
   }, []);
 
   return (
@@ -25,9 +25,10 @@ export function TopBar() {
         <Link
           to="/"
           aria-label="Studio Aura, início"
+          data-aura-logo
           className={cn(
-            "pointer-events-auto text-2xl font-medium tracking-[-0.06em] transition-opacity duration-500 md:text-3xl",
-            isHome && !scrolled && "pointer-events-none opacity-0",
+            "pointer-events-auto font-display text-[1.75rem] leading-[0.78] font-medium tracking-[-0.075em] md:text-[2.25rem]",
+            isHome && !docked && "pointer-events-none opacity-0",
           )}
         >
           Aura

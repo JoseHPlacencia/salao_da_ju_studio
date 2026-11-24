@@ -1,8 +1,12 @@
+import portrait from "@/assets/studio-aura-portrait.webp.asset.json";
+
 /** Fotos de demonstração (Unsplash). Troque pelas fotos reais do salão quando tiver. */
 const u = (id: string, w = 1200) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=82`;
 
 export const images = {
+  /** Retrato real do salão, sem fundo, usado na capa do início. */
+  heroPortrait: portrait.url,
   hero: u("1522337360788-8b13dee7a37e", 1400),
   interior: u("1600948836101-f9ffda59d250"),
   salonChairs: u("1521590832167-7bcbfaa6381f"),

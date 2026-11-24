@@ -72,6 +72,7 @@
   --animate-ken-burns: ken-burns 20s ease-in-out infinite alternate;
   --animate-page-in: page-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-blink: blink 1s steps(1) infinite;
+  --animate-portrait-in: portrait-in 1.6s var(--ease-out-expo) 1.3s both;
 }
 
 :root {
@@ -278,6 +279,18 @@
   }
   to {
     transform: none;
+  }
+}
+@keyframes portrait-in {
+  from {
+    opacity: 0;
+    transform: translateY(10%) scale(1.06);
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
   }
 }
 @keyframes loader-out {
