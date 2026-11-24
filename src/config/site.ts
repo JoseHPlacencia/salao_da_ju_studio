@@ -3,18 +3,18 @@
  * Os valores abaixo ainda são de exemplo — substitua pelos dados reais antes de publicar.
  */
 export const site = {
-  name: "Studio Aura",
+  name: "Da Ju Hair",
   tagline: "Beleza & bem-estar",
   whatsappNumber: "5527995012859",
   instagram: "seusalao",
-  email: "ola@studioaura.com.br",
+  email: "ola@dajuhair.com.br",
   address: { street: "Rua Exemplo, 123", district: "Praia do Canto", city: "Vitória — ES" },
   hours: [
     { days: "Terça a sexta", time: "09h às 19h" },
     { days: "Sábado", time: "09h às 17h" },
     { days: "Domingo e segunda", time: "Fechado" },
   ],
-  url: "https://studioaura.com.br",
+  url: "https://dajuhair.com.br",
 } as const;
 
 export const navLinks = [

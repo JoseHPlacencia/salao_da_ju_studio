@@ -61,7 +61,7 @@ export function BottomNav() {
             <span className={cn("h-px w-4 bg-current transition-transform duration-500", open && "translate-y-[3px] rotate-45")} />
             <span className={cn("h-px w-4 bg-current transition-transform duration-500", open && "-translate-y-[3px] -rotate-45")} />
           </button>
-          <span className="flex-1 truncate px-4 font-medium">{current?.label ?? "Studio Aura"}</span>
+          <span className="flex-1 truncate px-4 font-medium">{current?.label ?? "Da Ju Hair"}</span>
           <a
             href={whatsappUrl()}
             target="_blank"

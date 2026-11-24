@@ -23,10 +23,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Studio Aura | Beleza que revela você" },
+      { title: "Da Ju Hair | Beleza que revela você" },
       { name: "description", content: "Salão de beleza em Vitória: cabelo, unhas, maquiagem e tratamentos com atendimento acolhedor e personalizado." },
-      { property: "og:title", content: "Studio Aura | Beleza que revela você" },
-      { property: "og:description", content: "Um espaço para cuidar de você. Cabelo, unhas, maquiagem e tratamentos no Studio Aura." },
+      { property: "og:title", content: "Da Ju Hair | Beleza que revela você" },
+      { property: "og:description", content: "Um espaço para cuidar de você. Cabelo, unhas, maquiagem e tratamentos no Da Ju Hair." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.hero },
       { name: "twitter:card", content: "summary_large_image" },
@@ -107,12 +107,12 @@ function Statement() {
             <SplitWords
               step={28}
               lines={[
-                { text: "O Studio Aura é um salão de beleza que cria momentos de cuidado" },
+                { text: "O Da Ju Hair é um salão de beleza que cria momentos de cuidado" },
                 { text: "para revelar a sua melhor versão.", className: "text-accent" },
               ]}
             />
           ) : (
-            <span className="opacity-0">O Studio Aura é um salão de beleza que cria momentos de cuidado.</span>
+            <span className="opacity-0">O Da Ju Hair é um salão de beleza que cria momentos de cuidado.</span>
           )}
         </div>
         <div className="mt-20">
@@ -168,7 +168,7 @@ function Ritual() {
   return (
     <Sheet tone="muted" className="[--step-bg:var(--muted)]">
       <div className="container-aura pt-8 pb-20 md:pb-28">
-        <SectionLabel>O ritual Aura</SectionLabel>
+        <SectionLabel>O ritual Da Ju</SectionLabel>
         <Reveal>
           <p className="display-lg max-w-4xl">Mais que um atendimento — uma experiência pensada em você.</p>
         </Reveal>

@@ -14,9 +14,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/depoimentos")({
   head: () => ({
     meta: [
-      { title: "Depoimentos | Studio Aura" },
-      { name: "description", content: "O que nossas clientes dizem sobre o atendimento, o ambiente e os resultados no Studio Aura." },
-      { property: "og:title", content: "Depoimentos | Studio Aura" },
+      { title: "Depoimentos | Da Ju Hair" },
+      { name: "description", content: "O que nossas clientes dizem sobre o atendimento, o ambiente e os resultados no Da Ju Hair." },
+      { property: "og:title", content: "Depoimentos | Da Ju Hair" },
       { property: "og:description", content: "Quem vive, recomenda. Leia as experiências de nossas clientes." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.brushing },

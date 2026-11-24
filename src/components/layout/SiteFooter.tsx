@@ -51,8 +51,8 @@ export function SiteFooter() {
         </Reveal>
       </div>
 
-      <div ref={ref} className="container-aura flex flex-col justify-between gap-6 overflow-hidden lg:flex-row lg:items-end">
-        <p className="wordmark -mb-[0.06em] -ml-[0.04em]">{inView ? <SplitChars text="Aura" step={80} /> : <span className="opacity-0">Aura</span>}</p>
+      <div ref={ref} className="container-aura flex flex-col justify-between gap-6 overflow-x-clip lg:flex-row lg:items-end">
+        <p className="wordmark-name -ml-[0.04em] pb-[0.1em]">{inView ? <SplitChars text="Da Ju Hair" step={80} /> : <span className="opacity-0">Da Ju Hair</span>}</p>
         <div className="flex flex-wrap gap-1.5 pb-4 lg:pb-[3vw]">
           <a href={`https://instagram.com/${site.instagram}`} target="_blank" rel="noopener noreferrer" className="hover:opacity-60">
             <Tag>@{site.instagram}</Tag>
@@ -65,7 +65,7 @@ export function SiteFooter() {
           </Tag>
         </div>
       </div>
-      <div className="container-aura flex flex-wrap items-center justify-between gap-2 pt-4 pb-24 text-xs md:pb-8">
+      <div className="container-aura flex flex-wrap items-center justify-between gap-2 pt-4 pb-24 text-xs md:pb-20">
         <span>© 2014—{new Date().getFullYear()} {site.name}</span>
         <span className="mono">Beleza & bem-estar · {site.address.city}</span>
       </div>

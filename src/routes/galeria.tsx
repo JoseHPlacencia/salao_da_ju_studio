@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/galeria")({
   head: () => ({
     meta: [
-      { title: "Galeria | Studio Aura" },
-      { name: "description", content: "Veja cortes, cores, unhas, maquiagens e o ambiente do Studio Aura em nossa galeria de fotos." },
-      { property: "og:title", content: "Galeria | Studio Aura" },
+      { title: "Galeria | Da Ju Hair" },
+      { name: "description", content: "Veja cortes, cores, unhas, maquiagens e o ambiente do Da Ju Hair em nossa galeria de fotos." },
+      { property: "og:title", content: "Galeria | Da Ju Hair" },
       { property: "og:description", content: "Inspire-se com nossos trabalhos em cabelo, unhas e maquiagem." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: images.curls },

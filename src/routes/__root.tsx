@@ -9,10 +9,9 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { TopBar } from "@/components/layout/TopBar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -21,14 +20,14 @@ import { PageLoader } from "@/components/motion/PageLoader";
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen flex-col justify-between bg-accent p-4 text-accent-foreground md:p-6">
-      <span className="text-3xl font-medium tracking-[-0.06em]">Aura</span>
+      <span className="text-3xl font-medium tracking-[-0.06em]">Da Ju Hair</span>
       <div className="text-center">
         <h1 className="display-lg">Página não encontrada</h1>
         <Link to="/" className="mt-8 inline-flex rounded-[3px] border border-current px-5 py-3 text-sm font-medium transition-colors hover:bg-foreground hover:text-background">
           Voltar ao início
         </Link>
       </div>
-      <span className="text-xs">© Studio Aura</span>
+      <span className="text-xs">© Da Ju Hair</span>
     </div>
   );
 }
@@ -36,9 +35,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -79,14 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Studio Aura | Salão de beleza em Vitória" },
+      { title: "Da Ju Hair | Salão de beleza em Vitória" },
       {
         name: "description",
         content:
-          "Cabelo, unhas, maquiagem e tratamentos com atendimento personalizado no Studio Aura.",
+          "Cabelo, unhas, maquiagem e tratamentos com atendimento personalizado no Da Ju Hair.",
       },
       { name: "theme-color", content: "#ffffff" },
-      { property: "og:site_name", content: "Studio Aura" },
+      { property: "og:site_name", content: "Da Ju Hair" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
