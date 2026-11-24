@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project structure
+
+- Salon contact data (WhatsApp, address, hours, nav links) lives only in `src/config/site.ts`; every booking link is built with `whatsappUrl()` from `src/lib/whatsapp.ts` so changing the number updates the whole site.
+- Page copy/data lives in `src/data/*` (services, testimonials, team, FAQ, gallery, image URLs); routes only compose sections, so content edits never touch layout code.
+- Shared chrome (header, footer, loader, cursor, WhatsApp button) is mounted once in `src/routes/__root.tsx`; reusable blocks are in `src/components/sections`, animation primitives in `src/components/motion`.
+- Scroll reveals use `<Reveal>` (IntersectionObserver + CSS in styles.css); the `clip` variant clips an inner wrapper because a clipped target never reports as intersecting.
